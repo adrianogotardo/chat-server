@@ -5,7 +5,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "forever": "sudo forever start ./src/server.js"
   },
   "keywords": [],
   "author": "",
