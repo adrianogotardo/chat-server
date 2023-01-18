@@ -12,23 +12,31 @@ async function checkUsernameAvailability(username) {
         SELECT * FROM users
         WHERE username = $1;
     `, [username]);
-    return (usernameRequest.rows.length > 0);
+    return (usernameRequest.rowCount == 0);
 }
 
-async function signUp({username, hashedPassword, profilePic}) {
-    const newUser = await connection.query(`
+async function createUser({ username, hashedPassword, profilePic }) {
+    const newUserRequest = await connection.query(`
         INSERT INTO users (username, password, "profilePic")
         VALUES ($1, $2, $3)
         RETURNING id;
     `, [username, hashedPassword, profilePic]);
-    const userId = newUser.rows[0];
-    console.log(newUser.rows[0].id);
-    return userId;
-
-    //await connection.query(`
-    //    INSERT INTO sessions (userId, token)
-    //    VALUES ($1, $2);
-    //`, [newUserId, token]);
+    return newUserRequest.rows[0].id;
 }
 
-export { getUsers, checkUsernameAvailability, signUp }
+async function logUser({ userId, token }) {
+    await connection.query(`
+        INSERT INTO sessions ("userId", token)
+        VALUES ($1, $2);
+    `, [userId, token]);
+}
+
+async function getUserByUsername(username) {
+    const user = await connection.query(`
+        SELECT * FROM users
+        WHERE username = $1;
+    `, [username]);
+    return user.rows[0];
+}
+
+export { getUsers, checkUsernameAvailability, createUser, logUser, getUserByUsername }
