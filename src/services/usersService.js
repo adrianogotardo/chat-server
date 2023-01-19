@@ -21,7 +21,7 @@ async function signUp({ username, password, profilePic }) {
 }
 
 async function getUserInfo(username) {
-    const user = await service.getUserByUsername(username);
+    const user = await repository.getUserByUsername(username);
     if(!user) return false;
     return user;
 }

@@ -14,15 +14,12 @@ app.post('/signin', signIn);
 app.get('/messages', async (req, res) => {
 
 });
-
 app.post('/messages', async (req, res) => {
 
 });
-
 app.delete('/messages', async (req, res) => {
 
 });
-
 app.put('/messages', async (req, res) => {
 
 });
